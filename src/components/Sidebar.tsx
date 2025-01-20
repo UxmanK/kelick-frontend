@@ -24,13 +24,6 @@ import { Progress } from "@/components/ui/progress";
 import logo from "@/assets/logo.png";
 import wallat_icon from "@/assets/icons/wallat.svg";
 
-const notifications = {
-  text: "Notifications",
-  link: "/notifications",
-  icon: notificationIcon,
-  hasUnread: true,
-};
-
 const user = {
   name: "John Doe",
   email: "johndoe@assure.pro",
@@ -41,7 +34,6 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarContent className="space-y-6">
-        {/* Sidebar Header */}
         <SidebarHeader>
           <SidebarMenuButton asChild>
             <a href={"/"} className="flex items-center space-x-2">
@@ -132,7 +124,7 @@ export function AppSidebar() {
           {/* User Info Section */}
           <div className="flex items-center space-x-4">
             {user.avatar ? (
-              <img
+              <Image
                 src={user.avatar}
                 alt="User Avatar"
                 className="rounded-full w-10 h-10 border"

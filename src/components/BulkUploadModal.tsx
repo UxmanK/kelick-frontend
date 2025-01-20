@@ -29,34 +29,40 @@ export default function BulkUploadModal({
   const [isUploading, setIsUploading] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (acceptedFiles.length > 0) {
-      const file = acceptedFiles[0];
-      setUploadedFileName(file.name);
-      startUpload(file);
-    }
-  }, []);
+  const startUpload = useCallback(
+    (file: File) => {
+      setIsUploading(true);
+      setProgress(0);
 
-  const startUpload = (file: File) => {
-    setIsUploading(true);
-    setProgress(0);
+      let progressValue = 0;
+      const interval = setInterval(() => {
+        progressValue += 10;
+        setProgress(progressValue);
 
-    let progressValue = 0;
-    const interval = setInterval(() => {
-      progressValue += 10; // Increment by 5%
-      setProgress(progressValue);
+        if (progressValue >= 100) {
+          clearInterval(interval);
+          setTimeout(() => {
+            setIsUploading(false);
+            setUploadedFileName(null);
+            onFileUpload(file);
+            onOpenChange(false);
+          }, 500);
+        }
+      }, 200);
+    },
+    [onFileUpload, onOpenChange]
+  );
 
-      if (progressValue >= 100) {
-        clearInterval(interval);
-        setTimeout(() => {
-          setIsUploading(false); // Reset loading state
-          setUploadedFileName(null); // Clear file name
-          onFileUpload(file); // Trigger parent callback
-          onOpenChange(false); // Close modal
-        }, 1000);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        const file = acceptedFiles[0];
+        setUploadedFileName(file.name);
+        startUpload(file);
       }
-    }, 500); // 1-second interval
-  };
+    },
+    [startUpload]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -74,12 +80,12 @@ export default function BulkUploadModal({
           <div className="mt-4">
             <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
               <div
-                className="h-4 bg-teal-500 rounded-full transition-all duration-200 ease-in-out ease-in duration-500"
+                className="h-4 bg-teal-500 rounded-full transition-all duration-200"
                 style={{ width: `${progress}%` }}
               ></div>
             </div>
             <p className="text-gray-600 text-sm mb-2">
-              Please wait while we uplaod your file...
+              Please wait while we upload your file...
             </p>
           </div>
         ) : (
@@ -89,7 +95,7 @@ export default function BulkUploadModal({
             </DialogHeader>
             <div
               {...getRootProps()}
-              className={`border rounded-lg p-6 flex flex-col items-center justify-center mt-4 ease-in-out ease-in duration-500 transition-opacity duration-500 ${
+              className={`border rounded-lg p-6 flex flex-col items-center justify-center mt-4 transition-opacity ${
                 isDragActive
                   ? "border-teal-500"
                   : "border-teal-300 border-dashed"
@@ -157,14 +163,10 @@ export default function BulkUploadModal({
               Cancel
             </Button>
           )}
-          {!isUploading && (
+          {!isUploading && uploadedFileName && (
             <Button
               variant="primary"
-              onClick={() => {
-                if (uploadedFileName) {
-                  startUpload(new File([], uploadedFileName));
-                }
-              }}
+              onClick={() => startUpload(new File([], uploadedFileName))}
             >
               Continue
             </Button>

@@ -16,7 +16,6 @@ import CardsSection from "./CardSection";
 import SuccessDialog from "./SuccessDialog";
 import Confetti from "react-confetti";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import { Download } from "lucide-react";
 
 interface TableRow {
@@ -53,9 +52,8 @@ export default function EmployeesPage() {
         const sheet = workbook.Sheets[sheetName];
 
         // Parse and validate the data
-        const parsedData = XLSX.utils.sheet_to_json(sheet) as Array<
-          Record<string, unknown>
-        >;
+        const parsedData =
+          XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet);
 
         if (parsedData.length === 0) {
           throw new Error("The file is empty or contains no rows.");
@@ -90,11 +88,11 @@ export default function EmployeesPage() {
           });
           setIsSuccessDialogOpen(true);
         }, 3000);
-      } catch (error: any) {
+      } catch (error) {
         setIsLoading(false);
         toast.error(
           `Error processing the file: ${
-            error.message || "Invalid file format."
+            (error as Error).message || "Invalid file format."
           }`
         );
       }
