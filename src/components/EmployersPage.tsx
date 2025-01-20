@@ -13,10 +13,14 @@ import { CheckCircle } from "lucide-react";
 import Header from "./Header";
 import add_employee_icon from "@/assets/icons/add_employee.svg";
 import CardsSection from "./CardSection";
-import SuccessDialog from "./SuccessDialog";
-import Confetti from "react-confetti";
+// import SuccessDialog from "./SuccessDialog";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const SuccessDialog = dynamic(() => import("./SuccessDialog"), {
+  ssr: false,
+});
 
 interface TableRow {
   employeeId: string;
