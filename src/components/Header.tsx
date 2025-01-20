@@ -21,7 +21,7 @@ export default function Header({
   return (
     <Card className="flex flex-row items-center bg-white justify-between p-4">
       <CardHeader className="">
-        <h1 className="text-gray-600 text-3xl font-bold">{page_name}</h1>
+        <h1 className="text-gray-700 text-3xl font-bold">{page_name}</h1>
       </CardHeader>
       <div>
         {buttonText && onButtonClick && (

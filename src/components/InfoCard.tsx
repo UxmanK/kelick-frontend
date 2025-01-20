@@ -28,7 +28,7 @@ export default function InfoCard({
     labels: [],
     colors: data.map((item) => item.color),
     legend: {
-      show: false, // Hide the legend
+      show: false,
     },
 
     dataLabels: {
@@ -37,7 +37,7 @@ export default function InfoCard({
     plotOptions: {
       pie: {
         donut: {
-          size: "90%",
+          size: "80%",
         },
       },
     },
@@ -46,13 +46,12 @@ export default function InfoCard({
     },
   };
 
-  // Radial Bar Chart Options
   const semiDonutChartOptions: ApexCharts.ApexOptions = {
     chart: { type: "donut" },
     labels: [],
     colors: data.map((item) => item.color),
     legend: {
-      show: false, // Hide the legend
+      show: false,
     },
 
     dataLabels: {
@@ -60,31 +59,35 @@ export default function InfoCard({
     },
     plotOptions: {
       pie: {
-        startAngle: -90, // Start angle for semi-donut
-        endAngle: 90, // End angle for semi-donut
+        startAngle: -90,
+        endAngle: 90,
         donut: {
-          size: "90%",
+          size: "80%",
         },
       },
+    },
+    stroke: {
+      width: 4,
+      lineCap: "round",
     },
     tooltip: { enabled: false },
   };
 
   return (
     <div className={`${type === "bar" ? "" : "flex flex-row"} `}>
-      {/* Card Header */}
       <div className="mb-4">
-        <h2 className="text-lg font-bold text-gray-800">{title}</h2>
-        <p className="text-sm text-gray-600">{`${value} ${subtitle}`}</p>
+        <h2 className="text-xs font-medium text-[#5F6969]">{title}</h2>
+        <p className="text-4xl font-bold text-[#2E3333]">{`${value} `}</p>
+        <p className="text-base font-semibold text-[#2E3333]">{`${subtitle}`}</p>
       </div>
 
-      {/* Render Chart Based on Type */}
       {type === "donut" && (
         <ReactApexChart
           options={donutChartOptions}
           series={data.map((item) => item.value)}
           type="donut"
           height={150}
+          width={160}
         />
       )}
       {type === "bar" && <HorizontalBarChart data={data} />}
@@ -94,6 +97,7 @@ export default function InfoCard({
           series={data.map((item) => (item.value / totalValue) * 100)}
           type="donut"
           height={150}
+          width={160}
         />
       )}
     </div>

@@ -23,7 +23,7 @@ const cardData = [
       { label: "Contract", value: 5, color: "#b774FC" },
       { label: "Intern", value: 6, color: "#B3bebe" },
     ],
-    type: "bar", // Correctly typed as "bar"
+    type: "bar",
   },
   {
     title: "Employee Status",
@@ -34,15 +34,20 @@ const cardData = [
       { label: "Invite Sent", value: 10, color: "#fac905" },
       { label: "Payroll Only", value: 6, color: "#b774FC" },
     ],
-    type: "radialBar", // Correctly typed as "radialBar"
+    type: "radialBar",
   },
 ];
 
 export default function InfoCardsSection() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-4 gap-6 p-4">
       {cardData.map((item, index) => (
-        <div key={index} className="bg-white shadow-md rounded-lg p-6">
+        <div
+          key={index}
+          className={`bg-white shadow-md rounded-lg p-6 ${
+            index === 1 ? "col-span-2" : "col-span-1"
+          }`}
+        >
           <InfoCard
             key={index}
             title={item.title}
@@ -50,17 +55,20 @@ export default function InfoCardsSection() {
             subtitle={item.subtitle}
             data={item.data}
             type={item.type as "donut" | "bar" | "radialBar"} // Force the type
+            // width=
           />
-          <div className="mt-4 flex justify-between text-sm items-end">
+          <div className="mt-4 flex flex-wrap gap-4 text-sm items-end">
             {item.data.map((item, index) => (
               <div key={index} className="flex items-center space-x-1">
                 <span
                   style={{ backgroundColor: item.color }}
                   className="inline-block  h-4 rounded px-1"
                 ></span>
-                <span className="text-sm text-gray-600">
-                  <span className="font-semibold">{item.value}</span>{" "}
-                  <span>{item.label}</span>
+                <span className="text-sm">
+                  <span className="font-semibold text-#2E3333">
+                    {item.value}
+                  </span>{" "}
+                  <span className=" text-[#2E3333]">{item.label}</span>
                 </span>
               </div>
             ))}

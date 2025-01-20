@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import * as XLSX from "xlsx"; // Library for parsing XLS/XLSX files
+import * as XLSX from "xlsx";
 import EmployeesCard from "./EmployeesCard";
 import BulkUploadModal from "./BulkUploadModal";
 import { Spinner } from "@/components/ui/spinner";
@@ -27,13 +27,13 @@ interface TableRow {
 }
 
 export default function EmployeesPage() {
-  const [isDialogOpen, setIsDialogOpen] = useState(false); // Modal visibility state
-  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false); // Success dialog visibility
-  const [isLoading, setIsLoading] = useState(false); // Loading spinner state
-  const [tableData, setTableData] = useState<TableRow[]>([]); // Original Table data
-  const [filteredData, setFilteredData] = useState<TableRow[]>([]); // Filtered Table data
-  const [searchTerm, setSearchTerm] = useState(""); // Search term
-  const [filters, setFilters] = useState({ status: "All", role: "All" }); // Status and role filters
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [tableData, setTableData] = useState<TableRow[]>([]);
+  const [filteredData, setFilteredData] = useState<TableRow[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filters, setFilters] = useState({ status: "All", role: "All" });
 
   const handleClick = () => {
     console.log("clicked");
@@ -141,7 +141,7 @@ export default function EmployeesPage() {
           <Spinner />
         </div>
       ) : tableData.length > 0 ? (
-        <div className="p-4">
+        <div className="">
           <Header
             page_name="Employees"
             buttonText="Add Employee"
@@ -153,31 +153,37 @@ export default function EmployeesPage() {
               variant="secondary"
               className="flex items-center space-x-2 px-4 py-2 border rounded-lg shadow-sm bg-white hover:bg-gray-100 transition-colors duration-200"
             >
-              <Download className="w-5 h-5 text-gray-700" />{" "}
+              <Download className="w-5 h-5 text-gray-700" />
               <span> Export</span>
             </Button>
           </div>
-          <div className="p-4">
+          <div className="">
             <CardsSection />
           </div>
 
-          <div className="flex justify-between items-center py-6 px-4">
-            <h2 className="text-xl font-semibold">All Employees</h2>
-            <div className="flex items-center space-x-4">
-              <SearchBar
-                searchTerm={searchTerm}
-                setSearchTerm={(search) => {
-                  setSearchTerm(search);
-                  applyFilters(search, filters.status, filters.role);
-                }}
-              />
-              <Filters
-                filters={filters}
-                setFilters={(newFilters) => {
-                  setFilters(newFilters);
-                  applyFilters(searchTerm, newFilters.status, newFilters.role);
-                }}
-              />
+          <div className="flex flex-col p-4">
+            <div className="flex items-center space-x-4 justify-between">
+              <h2 className="text-xl font-semibold">All Employees</h2>
+              <div className="">
+                <SearchBar
+                  searchTerm={searchTerm}
+                  setSearchTerm={(search) => {
+                    setSearchTerm(search);
+                    applyFilters(search, filters.status, filters.role);
+                  }}
+                />
+                <Filters
+                  filters={filters}
+                  setFilters={(newFilters) => {
+                    setFilters(newFilters);
+                    applyFilters(
+                      searchTerm,
+                      newFilters.status,
+                      newFilters.role
+                    );
+                  }}
+                />
+              </div>
             </div>
           </div>
           <EmployeesTable tableData={filteredData} />
@@ -202,7 +208,6 @@ export default function EmployeesPage() {
             onClose={() => setIsSuccessDialogOpen(false)}
             onGeneratePayroll={handleGeneratePayroll}
           />
-          <Confetti width={window.innerWidth} height={window.innerHeight} />
         </>
       )}
     </div>

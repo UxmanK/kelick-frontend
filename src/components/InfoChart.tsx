@@ -7,7 +7,7 @@ const ReactApexChart = dynamic(() => import("react-apexcharts"), {
 });
 
 interface InfoChartProps {
-  type: "donut" | "bar" | "radialBar"; // Only these three are allowed
+  type: "donut" | "bar" | "radialBar";
   labels: string[];
   series: number[];
   colors: string[];
@@ -21,7 +21,7 @@ export default function InfoChart({
 }: InfoChartProps) {
   const options: ApexOptions = {
     chart: {
-      type, // This will now always be one of "donut", "bar", or "radialBar"
+      type,
       toolbar: { show: false },
     },
     labels,
@@ -46,7 +46,7 @@ export default function InfoChart({
       },
     },
     legend: {
-      position: "right", // Valid value
+      position: "right",
       offsetY: 0,
       offsetX: 0,
     },

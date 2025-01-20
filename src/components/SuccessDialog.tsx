@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,6 +10,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
+import { Player } from "@lottiefiles/react-lottie-player";
+import animation from "@/assets/animations/end-screen-animation.json";
 
 interface SuccessDialogProps {
   isOpen: boolean;
@@ -21,14 +24,34 @@ export default function SuccessDialog({
   onClose,
   onGeneratePayroll,
 }: SuccessDialogProps) {
+  const [isAnimationVisible, setIsAnimationVisible] = useState(true);
+
   return (
     <Dialog open={isOpen}>
       <DialogContent className="max-w-md text-center">
-        {/* Ensure DialogTitle is included */}
         <DialogHeader>
           <DialogTitle className="sr-only">Success Dialog</DialogTitle>{" "}
-          {/* Hidden but accessible */}
           <CheckCircle className="text-center text-teal-500 w-12 h-12 mx-auto" />
+          {isAnimationVisible ? (
+            <Player
+              autoplay
+              loop={false}
+              src={animation}
+              style={{
+                height: "500px",
+                width: "500px",
+                position: "absolute",
+                zIndex: 50,
+              }}
+              onEvent={(event) => {
+                if (event === "complete") {
+                  setIsAnimationVisible(false);
+                }
+              }}
+            />
+          ) : (
+            ""
+          )}
           <h2 className="text-lg text-center font-semibold mt-4">
             Congrats! You’ve successfully added all your employees!
           </h2>

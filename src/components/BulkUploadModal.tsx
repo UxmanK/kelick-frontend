@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import uploadIcon from "@/assets/icons/upload_icon.svg";
 import excelIcon from "@/assets/icons/excel_icon.svg";
+import download_icon from "@/assets/icons/download_icon.svg";
 
 interface BulkUploadModalProps {
   isOpen: boolean;
@@ -70,35 +71,24 @@ export default function BulkUploadModal({
       "text/csv": [".csv"],
       "application/vnd.ms-excel": [".xls", ".xlsx"],
     },
-    maxSize: 25 * 1024 * 1024, // 25 MB limit
+    maxSize: 25 * 1024 * 1024,
   });
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg p-6">
-        {isUploading ? (
-          <div className="mt-4">
-            <div className="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
-              <div
-                className="h-4 bg-teal-500 rounded-full transition-all duration-200"
-                style={{ width: `${progress}%` }}
-              ></div>
-            </div>
-            <p className="text-gray-600 text-sm mb-2">
-              Please wait while we upload your file...
-            </p>
-          </div>
-        ) : (
-          <>
-            <DialogHeader>
-              <DialogTitle>Upload File</DialogTitle>
-            </DialogHeader>
+      <DialogContent className="max-w-xl p-6 gap-3 rounded-xl">
+        <DialogHeader>
+          <DialogTitle>Upload File</DialogTitle>
+        </DialogHeader>
+
+        <div className="transition-opacity duration-300 border-gray-300 border-dashed border rounded-lg p-8 ">
+          {!isUploading ? (
             <div
               {...getRootProps()}
-              className={`border rounded-lg p-6 flex flex-col items-center justify-center mt-4 transition-opacity ${
+              className={` flex flex-col items-center justify-center mt-4 transition-opacity ${
                 isDragActive
-                  ? "border-teal-500"
-                  : "border-teal-300 border-dashed"
+                  ? "border-gray-500"
+                  : "border-gray-300 border-dashed"
               }`}
             >
               <input {...getInputProps()} />
@@ -122,54 +112,74 @@ export default function BulkUploadModal({
                 </p>
               )}
             </div>
-          </>
-        )}
-
-        {/* Footer */}
-        {!isUploading && (
-          <>
-            <div className="flex justify-between font-semibold mt-4">
-              <p className="text-gray-600 text-xs">
-                Supported formats: XLS, CSV
-              </p>
-              <p className="text-gray-600 text-xs">Max size: 25MB</p>
-            </div>
-
-            <div className="mt-6 bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center space-x-4">
-              <Image src={excelIcon} alt="Excel Icon" className="w-10 h-10" />
-              <div>
-                <p className="text-gray-800 font-medium">Table Example</p>
-                <p className="text-gray-600 text-sm">
-                  You can download the attached example and use it as a starting
-                  point for your own file.
-                </p>
+          ) : (
+            <div className="flex flex-col items-center justify-center mt-4 h-full">
+              <div className="w-[183px] h-4 bg-[#F2F5F5] rounded-s-sm	overflow-hidden">
+                <div
+                  className="h-4 bg-[#02B9B0] rounded-s-sm transition-all duration-200"
+                  style={{ width: `${progress}%` }}
+                ></div>
               </div>
-              <Button variant="outline" className="ml-auto">
-                Download XLSX
-              </Button>
+              <p className="text-[#5F6969] font-semi text-xs mb-2 mt-4 text-center">
+                Please wait while we upload your file...
+              </p>
             </div>
-          </>
-        )}
+          )}
+        </div>
+
+        <div className="flex justify-between font-semibold mt-4">
+          <p className="text-[#5F6969] text-xs">Supported formats: XLS, CSV</p>
+          <p className="text-gray-600 text-xs">Max size: 25MB</p>
+        </div>
+
+        <div className="mt-6 bg-[#F2F5F5] rounded-xl p-4 flex items-center space-x-2">
+          <Image src={excelIcon} alt="Excel Icon" className="w-12 h-10" />
+          <div>
+            <p className="text-gray-800 font-bold">Table Example</p>
+            <p className="text-gray-600 font-medium text-sm">
+              You can download the attached example and use it as a starting
+              point for your own file.
+            </p>
+          </div>
+          <Button
+            variant="outline"
+            className="font-semibold text-sm rounded-xl bg-[#F9FCFC] border border-[#B3BEBE]"
+          >
+            <Image src={download_icon} alt={"download_icon"} />
+            Download XLSX
+          </Button>
+        </div>
 
         <DialogFooter className="flex justify-end mt-6">
           {!isUploading && (
-            <Button
-              variant="secondary"
-              onClick={() => {
-                setUploadedFileName(null);
-                onOpenChange(false);
-              }}
-            >
-              Cancel
-            </Button>
-          )}
-          {!isUploading && uploadedFileName && (
-            <Button
-              variant="primary"
-              onClick={() => startUpload(new File([], uploadedFileName))}
-            >
-              Continue
-            </Button>
+            <>
+              <Button
+                variant="secondary"
+                onClick={() => {
+                  setUploadedFileName(null);
+                  onOpenChange(false);
+                }}
+                className="font-semibold text-sm rounded-xl bg-[#F9FCFC] border border-[#B3BEBE]"
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="primary"
+                className="font-semibold text-sm rounded-xl bg-[#02B9B0] border border-[#1A1A1A1F]"
+              >
+                Continue
+              </Button>
+
+              {uploadedFileName && (
+                <Button
+                  variant="primary"
+                  onClick={() => startUpload(new File([], uploadedFileName))}
+                  className="font-semibold text-sm rounded-xl bg-[#02B9B0] border border-[#1A1A1A1F]"
+                >
+                  Continue
+                </Button>
+              )}
+            </>
           )}
         </DialogFooter>
       </DialogContent>

@@ -5,6 +5,7 @@ import employee_icon from "@/assets/icons/employee.svg";
 import payroll_icon from "@/assets/icons/payroll.svg";
 import leave_icon from "@/assets/icons/leave.svg";
 import claims_icon from "@/assets/icons/claims.svg";
+import more_icon from "@/assets/icons/more_icon.svg";
 
 import notificationIcon from "@/assets/icons/notification_bell.svg";
 
@@ -37,6 +38,7 @@ export const sidebarSections: SidebarSection[] = [
       { text: "Payroll", link: "/", icon: payroll_icon },
       { text: "Leaves", link: "/", icon: leave_icon },
       { text: "Claims", link: "/", icon: claims_icon },
+      { text: "More", link: "/", icon: more_icon },
     ],
   },
 ];
