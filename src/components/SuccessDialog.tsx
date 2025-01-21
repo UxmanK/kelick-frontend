@@ -27,10 +27,10 @@ export default function SuccessDialog({
   const [isAnimationVisible, setIsAnimationVisible] = useState(true);
 
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-md text-center">
         <DialogHeader>
-          <DialogTitle className="sr-only">Success Dialog</DialogTitle>{" "}
+          <DialogTitle className="sr-only">Success Dialog</DialogTitle>
           <CheckCircle className="text-center text-teal-500 w-12 h-12 mx-auto" />
           {isAnimationVisible ? (
             <Player
